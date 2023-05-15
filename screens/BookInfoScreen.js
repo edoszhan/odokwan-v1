@@ -1,24 +1,21 @@
 import * as React from 'react';
 import { Button, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
 import 'react-native-gesture-handler';
 import { Text } from 'react-native';
-import { HomeScreen } from './HomeScreen';
 
 
-const OdokTimerScreen = ({navigation}) => {
+const BookInfoScreen = ({navigation}) => {
     return(
         <View>
             <Text>
-                here is odoktimer page
+                here is book info page
             </Text>
             <Button
-            title="exit to home"
+            title="go back home"
             onPress={() => navigation.navigate("HomeScreen")}
        />
         </View>
     );
 }
 
-export {OdokTimerScreen};
+export {BookInfoScreen};

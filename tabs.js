@@ -9,9 +9,15 @@ import { GalleryScreen } from "./screens/GalleryScreen";
 import { AnalyticsScreen } from "./screens/AnalyticsScreen";
 import { BookDetailScreen } from "./screens/BookDetailScreen";
 import { OdokTimerScreen } from "./screens/OdokTimerScreen";
+
+import { ScanBarcodeScreen } from "./screens/ScanBarcodeScreen";
+import { SearchBookScreen } from "./screens/SearchBookScreen";
+import { BookInfoScreen } from "./screens/BookInfoScreen";
 import 'react-native-gesture-handler';
 import { createStackNavigator } from '@react-navigation/stack';
 import { getFocusedRouteNameFromRoute } from "@react-navigation/native";
+import { Button } from 'react-native';
+import * as RootNavigation from "./RootNavigation"
 
 
 
@@ -44,41 +50,19 @@ function HomeStack({navigation, route}) {
     return(
         <stackHome.Navigator initialRouteName="HomeScreen" >
             <stackHome.Screen name="HomeScreen" component={HomeScreen} options={{title:"ODOK"}}/>
+            <stackHome.Screen name="BookDetail" component={BookDetailScreen} options={{title:"Book Detail"}}/>
+            <stackHome.Screen name="OdokTimer" component={OdokTimerScreen} options={{title:"ODOK"}}/>
+            <stackHome.Screen name="SearchBook" component={SearchBookScreen} options={{title:"ODOK"}}/>
+            <stackHome.Screen name="ScanBarcode" component={ScanBarcodeScreen} options={{title:"ODOK"}}/>
+            <stackHome.Screen name="BookInfo" component={BookInfoScreen} options={{title:"ODOK"}}/>
         </stackHome.Navigator>
     )
 }
 
-
-const stackBookList = createStackNavigator()
-
+const stackCreateBook = createStackNavigator()
 
 
-function BookListStack({navigation, route}) {
-    React.useLayoutEffect(() => {
-        const routeName = getFocusedRouteNameFromRoute(route);
-        if (routeName ==="BookListScreen" || routeName === undefined){
-            navigation.setOptions({ tabBarStyle : {display: 'flex' , position: "absolute",
-            bottom: 25,
-            left:20,
-            right:20,
-            elevation:0,
-            backgroundColor:"#ffffff",
-            borderRadius:15,
-            height:90,
-            ...styles.shadow}});
-    }
-        else {
-            navigation.setOptions({ tabBarStyle : {display: 'none' }, });
-        }
-    }, [navigation, route]);
-    return(
-        <stackBookList.Navigator initialRouteName="BookListScreen" options = {{initialRouteName:"BookListScreen"}} >
-            <stackBookList.Screen name="BookListScreen" component={BooklistScreen} options={{title:"ODOK"}}/>
-            <stackBookList.Screen name="BookDetail" component={BookDetailScreen} options={{title:"Book Detail"}}/>
-            <stackBookList.Screen name="OdokTimer" component={OdokTimerScreen} options={{title:"ODOK"}}/>
-        </stackBookList.Navigator>
-    )
-}
+
 
 
 
@@ -86,9 +70,9 @@ const Tabs = () => {
 
     const [isVisible, setIsVisible] = useState(false);
     const list = [
-    { title: 'search with book name' },
-    { title: 'search with book barcode' },
-    { title: 'type book information directly'},
+    { title: 'search with book name' , onPress: () => {setIsVisible(false); RootNavigation.navigate("SearchBook")}},
+    { title: 'search with book barcode', onPress: () => {setIsVisible(false); RootNavigation.navigate("ScanBarcode")} },
+    { title: 'type book information directly', onPress: () => {setIsVisible(false); RootNavigation.navigate("BookInfo")}},
     ];
 
 
@@ -126,8 +110,7 @@ const Tabs = () => {
                                 </Text>
                             </View>
                     )}}/>
-                    <Tab.Screen name = "Booklist" component={BookListStack} options={{title:"ODOK",
-                    headerShown:false,
+                    <Tab.Screen name = "Booklist" component={BooklistScreen} options={{title:"ODOK",
                         tabBarIcon: ({focused}) =>(
                             <View style ={{alignItems:"center", justifyContent:"center", bottom: 3}} >
                                 <Icon name='library-books' 
