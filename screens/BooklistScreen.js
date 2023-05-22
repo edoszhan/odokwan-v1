@@ -1,18 +1,18 @@
-import { Text, View, ScrollView, StyleSheet, FlatList, TouchableHighlight, Image } from "react-native";
+import { Text, View, ScrollView, StyleSheet, FlatList, TouchableHighlight, Image, Pressable, TouchableOpacity, } from "react-native";
 import React from "react";
 import {Icon} from "@rneui/themed"
 import { Button } from 'react-native';
 
 
-type BookData = {
-    title: String;
-    author: String;
-    page_number: Number;
-    image: Number;
-    status: Number;
-};
+// type BookData = {
+//     title: String;
+//     author: String;
+//     page_number: Number;
+//     image: Number;
+//     status: Number;
+// };
 
-const tempData: BookData[] = [
+const tempData = [
     {
         title: "Harry Potter and the Philosopher's Stone",
         author: "J. K. Rowling",
@@ -65,7 +65,7 @@ const tempData: BookData[] = [
 ];
 
 const Item = ({item, onPress, backgroundColor, textColor}) => (
-    <TouchableHighlight onPress={onPress} style = {[styles.book, {backgroundColor}]}>
+    <TouchableOpacity onPress={onPress} style = {[styles.book, {backgroundColor}]} activeOpacity={0.7} >
     <View style={styles.bookcontainer}>
         <Image 
             style={styles.bookimage}
@@ -78,13 +78,13 @@ const Item = ({item, onPress, backgroundColor, textColor}) => (
             <Text style={[styles.title, {color: textColor}]}>{item.author}</Text>
         </View>
     </View>
-    </TouchableHighlight>
+    </TouchableOpacity>
 );
 
 
 const BooklistScreen = ({navigation}) => {
 
-    const renderItem = ({item}: {item: BookData}) => {
+    const renderItem = ({item}) => {
         const backgroundColor = "white";
         const color = "black";
         return (
@@ -104,6 +104,7 @@ const BooklistScreen = ({navigation}) => {
             />
         );
     };
+
     return(
         <View style={styles.container}>
             <View style={{flex: 2}}>
