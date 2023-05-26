@@ -11,6 +11,7 @@ import {
     Keyboard,
     KeyboardAvoidingView,
     Modal,
+    Image
 } from 'react-native';
 import { Icon } from "@rneui/themed";
 import { NavigationContainer } from '@react-navigation/native';
@@ -20,7 +21,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTheme } from '@react-navigation/native';
 import { useCardAnimation } from '@react-navigation/stack';
 
-const OdokTimerScreen = ({navigation}) => {
+
+const OdokTimerScreen = ({navigation, route}) => {
     const insets = useSafeAreaInsets();
     const date = new Date();
     const [count, setCount] = useState(0);
@@ -106,12 +108,17 @@ const OdokTimerScreen = ({navigation}) => {
                     marginVertical: 30,
                 }}
             >
-                <Text style={{ fontSize: 20, color: "black" }}>
+                <Image 
+                        source={route.params.image}
+                        style={{width:"100%", height:"100%"}}
+                    />
+                {/* <Text style={{ fontSize: 20, color: "black" }}>
                     Book Cover
-                </Text>
+                </Text> */}
+
             </View>
             <Text style={{ fontSize: 20, color: "black" }}>
-                Book Title
+                {route.params.title}
             </Text>
             <Text style={{ fontSize: 30, color: "black" }}>
                 {formatTime()}
@@ -215,7 +222,7 @@ const OdokTimerScreen = ({navigation}) => {
                                 Title
                             </Text>
                             <Text>
-                                Book Title
+                            {route.params.title}
                             </Text>
                         </View>
                         <View
@@ -258,7 +265,7 @@ const OdokTimerScreen = ({navigation}) => {
                                 Pages
                             </Text>
                             <Text>
-                                {`113p ~ `} 
+                                {route.params.page_number}p ~ 
                             </Text>
                             <TextInput 
                                 placeholder='type page'
