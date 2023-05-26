@@ -8,7 +8,7 @@ import { BooklistScreen } from "./screens/BooklistScreen";
 import { GalleryScreen } from "./screens/GalleryScreen";
 import { AnalyticsScreen } from "./screens/AnalyticsScreen";
 import { BookDetailScreen } from "./screens/BookDetailScreen";
-import { OdokTimerScreen } from "./screens/OdokTimerScreen";
+import { OdokTimerScreen, OdokCreateScreen } from "./screens/OdokTimerScreen";
 
 import { ScanBarcodeScreen } from "./screens/ScanBarcodeScreen";
 import { SearchBookScreen } from "./screens/SearchBookScreen";
@@ -27,7 +27,8 @@ import * as RootNavigation from "./RootNavigation"
 
 const Tab = createBottomTabNavigator();
 
-const stackHome = createStackNavigator()
+const stackHome = createStackNavigator();
+const stackBooklist = createStackNavigator();
 
 function HomeStack({navigation, route}) {
     React.useLayoutEffect(() => {
@@ -52,6 +53,15 @@ function HomeStack({navigation, route}) {
             <stackHome.Screen name="HomeScreen" component={HomeScreen} options={{title:"ODOK"}}/>
             <stackHome.Screen name="BookDetail" component={BookDetailScreen} options={{title:"Book Detail"}}/>
             <stackHome.Screen name="OdokTimer" component={OdokTimerScreen} options={{title:"ODOK"}}/>
+            <stackHome.Screen 
+                name="OdokCreate" 
+                component={OdokCreateScreen} 
+                options={{
+                    presentation: "transparentModal",
+                    headerShown: false,
+                    cardOverlayEnabled: true
+                }}
+            />
             <stackHome.Screen name="SearchBook" component={SearchBookScreen} options={{title:"ODOK"}}/>
             <stackHome.Screen name="ScanBarcode" component={ScanBarcodeScreen} options={{title:"ODOK"}}/>
             <stackHome.Screen name="BookInfo" component={BookInfoScreen} options={{title:"ODOK"}}/>
@@ -61,7 +71,44 @@ function HomeStack({navigation, route}) {
 
 const stackCreateBook = createStackNavigator()
 
-
+function BooklistStack({navigation, route}) {
+    React.useLayoutEffect(() => {
+        const routeName = getFocusedRouteNameFromRoute(route);
+        if (routeName ==="BooklistScreen" || routeName === undefined){
+            navigation.setOptions({ tabBarStyle : {display: 'flex' , position: "absolute",
+            bottom: 25,
+            left:20,
+            right:20,
+            elevation:0,
+            backgroundColor:"#ffffff",
+            borderRadius:15,
+            height:90,
+            ...styles.shadow}});
+    }
+        else {
+            navigation.setOptions({ tabBarStyle : {display: 'none' }, });
+        }
+    }, [navigation, route]);
+    return(
+        <stackBooklist.Navigator initialRouteName="BooklistScreen" >
+            <stackBooklist.Screen name="BooklistScreen" component={BooklistScreen} options={{title:"ODOK"}}/>
+            <stackBooklist.Screen name="BookDetail" component={BookDetailScreen} options={{title:"Book Detail"}}/>
+            <stackBooklist.Screen name="OdokTimer" component={OdokTimerScreen} options={{title:"ODOK"}}/>
+            <stackBooklist.Screen 
+                name="OdokCreate" 
+                component={OdokCreateScreen} 
+                options={{
+                    presentation: "transparentModal",
+                    headerShown: false,
+                    cardOverlayEnabled: true
+                }}
+            />
+            <stackBooklist.Screen name="SearchBook" component={SearchBookScreen} options={{title:"ODOK"}}/>
+            <stackBooklist.Screen name="ScanBarcode" component={ScanBarcodeScreen} options={{title:"ODOK"}}/>
+            <stackBooklist.Screen name="BookInfo" component={BookInfoScreen} options={{title:"ODOK"}}/>
+        </stackBooklist.Navigator>
+    )
+}
 
 
 
@@ -110,7 +157,8 @@ const Tabs = () => {
                                 </Text>
                             </View>
                     )}}/>
-                    <Tab.Screen name = "Booklist" component={BooklistScreen} options={{title:"ODOK",
+                    <Tab.Screen name = "Booklist" component={BooklistStack} options={{title:"ODOK",
+                        headerShown:false,
                         tabBarIcon: ({focused}) =>(
                             <View style ={{alignItems:"center", justifyContent:"center", bottom: 3}} >
                                 <Icon name='library-books' 
