@@ -9,24 +9,24 @@ const BookDetailScreen = ({navigation, route}) => {
         <View style={styles.container}>
             <View style={styles.detailcontainer}>
                 <View style={{flex: 1}}>
-                    {/* <Image 
+                    <Image 
                         source={route.params.image}
                         style={styles.bookimage}
-                    /> */}
+                    />
                 </View>
                 <View style={styles.textcontainer}>
-                    {/* <View style={{marginLeft: 10, marginTop: 5}}>{status_icon(route.params.status)}</View> */}
+                    <View style={{marginLeft: 10, marginTop: 5}}>{status_icon(route.params.status)}</View>
                     <Text style={styles.title}>
-                        {/* {route.params.title} */}
-                        title
+                        {route.params.title}
+                        {/* title */}
                     </Text>
                     <Text style={styles.author}>
-                        {/* {route.params.author} */}
-                        author
+                        {route.params.author}
+                        {/* author */}
                     </Text>
                     <Text style={styles.page_number}>
-                        {/* Total {route.params.page_number}p */}
-                        Total 123p
+                        Total {route.params.page_number}p
+                        {/* Total 123p */}
                     </Text>
                 </View>
             </View>
