@@ -32,6 +32,9 @@ const OdokTimerScreen = ({navigation}) => {
     const [modalVisible, setModalVisible] = useState(false);
     const increment = useRef(null);
 
+    const [page, setPage] = useState('');
+    const [memo, setMemo] = useState('');
+
     const startTimer = () => {
         setEndTime('');
         setIsActive(!isActive);
@@ -263,6 +266,7 @@ const OdokTimerScreen = ({navigation}) => {
                                     paddingHorizontal: 10,
                                 }}
                                 keyboardType='number-pad'
+                                onChangeText={(text) => setPage(text)}
                             />
                             <Text>
                                 {` p`} 
@@ -292,6 +296,7 @@ const OdokTimerScreen = ({navigation}) => {
                                 }}
                                 multiline={true}
                                 textAlignVertical="top"
+                                onChangeText={(text) => setMemo(text)}
                             />
                             </ScrollView>
                         </View>
