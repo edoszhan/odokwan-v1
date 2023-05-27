@@ -3,24 +3,67 @@ import { View, PermissionsAndroid, Platform, StyleSheet, Button, TouchableOpacit
 import { CameraScreen} from 'react-native-camera-kit';
 //import * as React from 'react';
 import 'react-native-gesture-handler';
-import { Text } from 'react-native';
+import { Text , Image} from 'react-native';
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
   } from 'react-native-responsive-screen';
+import { Alert } from 'native-base';
+// import CameraScreen from 'react-native-camera-kit';
+import axios from 'axios';
+
+var parseString = require('react-native-xml2js').parseString;
 
 
 const ScanBarcodeScreen = ({navigation}) => {
     const [codeval, setCodeval] = useState('');
     const [openScan, setOpenScan] = useState(false);
+    const [bookInfo, setBookInfo] = useState({})
+    const [bookSearched, setBookSearched] = useState(false);
+
     
     
-    const onBarcodeScan = (codeval) => {
-        //codeval is the scanned value
-        setCodeval(codeval);
-        setOpenScan(false);
-        alert(codeval)
+
+    const searchBook = async (input) => {
+      try {
+        const response = await axios.get(
+          "https://openapi.naver.com/v1/search/book_adv.xml",
+          {params:{d_isbn : input},
+          headers :{
+              "X-Naver-Client-Id" : "cxxfk1HU9t3_bFTabFza",
+              "X-Naver-Client-Secret" : "zeJoQHiNTp"
+          }
+        }
+        );
+        // setSearchResult(response.data.items);
+        // console.log(response.data);
+
+        parseString(response.data, function (err, result) {
+          console.dir(result);
+          var res = JSON.parse(JSON.stringify(result)).rss.channel[0].item[0];
+          setBookInfo({title: res.title[0], author : res.author[0], image : res.image[0]})
+          setBookSearched(true);
+          console.log({title: res.title[0], author : res.author[0], image : res.image[0]})
+      });
+        // // console.log(typeof(response.data));
+        // console.log(response.data.items);
+        // console.log(typeof(response.data.items));
+        // console.log(response.data.items instanceof Array);
+      } catch (e) {
+        console.log("failed");
+        // setSearchResult([]);
+      }
     };
+
+    const onBarcodeScan = (codeval) => {
+      //codeval is the scanned value
+      setCodeval(codeval);
+      setOpenScan(false);
+      // console.log(typeof(codeval));
+      // console.log(codeval)
+      alert(codeval); 
+      searchBook(codeval);
+  };
     
     const onOpenScan = () => {
         if (Platform.OS === 'android') {
@@ -72,6 +115,41 @@ const ScanBarcodeScreen = ({navigation}) => {
         ) : (
         <View style={styles.container}>
           <View style={{flex: 2}}/>
+          <View>
+
+            {bookSearched ? 
+            (<View style = {{alignItems:"center", justifyContent:"center"}}>
+                <View
+                  style={{
+                      height: 250,
+                      width: 200,
+                      backgroundColor: "white",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginVertical: 30,
+                  }}
+              >
+                  <Image 
+                          source={{uri : bookInfo.image}}
+                          style={{width:"100%", height:"100%"}}
+                      />
+                  <Text style = {{ width : "80%"}}>{bookInfo.title}</Text>
+                  <Text>{bookInfo.author}</Text>
+                  {/* <Text style={{ fontSize: 20, color: "black" }}>
+                      Book Cover
+                  </Text> */}
+
+              </View>
+
+              </View>)
+            :
+              <></>
+
+            }
+            
+            
+        
+          </View>
           <View style={{flex: 1}}>
             <View style={styles.btnArea}>
               <TouchableOpacity style={styles.btn} onPress={onOpenScan}>
@@ -87,7 +165,7 @@ const ScanBarcodeScreen = ({navigation}) => {
           </View>
           <View style={{flex: 2}}>
             <Text>
-                here is barcode scan page
+                here is barcode scan pagess
             </Text>
             <Button
             title="go to book info"
