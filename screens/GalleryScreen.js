@@ -20,21 +20,41 @@ import LinearGradient from 'react-native-linear-gradient';
 const tempOdokData = [
     {
         id: 1,
-        title: "Harry Potter and the Philosopher's Stone",
+        title: "Harry Potter 1",
         author: "J. K. Rowling",
-        read_pages: 32,
+        read_pages: 60,
         date: "2000-01-01",
-        time: "18:00",
+        time: "6:00",
         minutes: 10,
         seconds: 10,
     },
     {
         id: 2,
-        title: "Harry Potter and the Chamber of Secrets",
+        title: "Harry Potter 2",
         author: "J. K. Rowling",
-        read_pages: 58,
+        read_pages: 120,
         date: "2001-01-01",
-        time: "6:00",
+        time: "12:00",
+        minutes: 10,
+        seconds: 10,
+    },
+    {
+        id: 3,
+        title: "Harry Potter 3",
+        author: "J. K. Rowling",
+        read_pages: 180,
+        date: "2001-01-01",
+        time: "18:00",
+        minutes: 10,
+        seconds: 10,
+    },
+    {
+        id: 4,
+        title: "Harry Potter 4",
+        author: "J. K. Rowling",
+        read_pages: 240,
+        date: "2001-01-01",
+        time: "24:00",
         minutes: 10,
         seconds: 10,
     },
@@ -45,12 +65,34 @@ const tempOdokData = [
 const GalleryScreen = () => {
 
     const [visible, setVisible] = useState(false);
+
+    const [selectedOdok, setSelectedOdok] = useState(null);
       
-    const toggleOverlay = () => {
-      setVisible(!visible);
+    const toggleOverlay = (item) => {
+        setSelectedOdok(item)
+        setVisible(!visible);
     };
   
     const OverlayExample = () => {
+
+        if (!selectedOdok) return null;
+
+        const find_image = () => {
+            switch (selectedOdok.time) {
+                case "6:00":
+                    return require("./img/odokwan_600.png");
+                case "12:00":
+                    return require("./img/odokwan_1200.png");
+                case "18:00":
+                    return require("./img/odokwan_1800.png");
+                case "24:00":
+                    return require("./img/odokwan_2400.png");
+                default:
+                    return require("./img/odokwan_600.png");
+            };
+        };                
+
+        const img_address = find_image();
 
         return (
           <View>
@@ -65,10 +107,21 @@ const GalleryScreen = () => {
                 > */}
                     <ImageBackground
                         style={styles.odokimage}
-                        source={require("./img/odokwan_1800.png")}
+                        source={find_image()}
                         imageStyle={{borderRadius: 30}}
                     >
-                    <Text style={{fontSize: 30, marginLeft: 20, marginTop: 35}}>Hey</Text>
+                    <View style={{flexDirection: 'column'}}>
+                        <Text style={styles.overlay_title}>{selectedOdok.title}</Text>
+                        <Text style={styles.overlay_author}>{selectedOdok.author}</Text>
+                        <View style={{flexDirection: 'row'}}>
+                            <View style={{paddingLeft: 20, width: 130}}>
+                            <Text style={styles.overlay_read_pages}>{selectedOdok.read_pages} page</Text>
+                            </View>
+                            <View style={{paddingLeft: 3}}>
+                            <Text style={styles.overlay_time}>{selectedOdok.minutes}m {selectedOdok.seconds}s</Text>
+                            </View>
+                        </View>
+                    </View>
                     </ImageBackground>
                 {/* </LinearGradient> */}
             </Overlay>
@@ -77,8 +130,22 @@ const GalleryScreen = () => {
       };
 
     const Odok = ({item, onPress, textColor}) => {
-        // How do you make a switch case in react native???
-        const chosen_color = item.time === "18:00" ? ["#f37880", "#f78d53", "#fa9c31"] : ["#66d6ff", "#5ab8ff", "#51a3ff"];
+
+        const choose_color = () => {
+            switch (item.time) {
+            case "6:00":
+                return ["#af7ff0", "#d8a9c2", "#f4c7a1"];
+            case "12:00":
+                return ["#66d6ff", "#5ab8ff", "#51a3ff"];
+            case "18:00":
+                return ["#f37880", "#f78d53", "#fa9c31"];
+            case "24:00":
+                return ["#0a0b9c", "#1b1091", "#2d1484"];
+            default:
+                return ["#66d6ff", "#5ab8ff", "#51a3ff"];
+            };
+        };
+        const chosen_color = choose_color();
         return (
         <TouchableOpacity onPress={onPress} style = {styles.odok_container} activeOpacity={0.7} >
             <LinearGradient 
@@ -105,7 +172,7 @@ const GalleryScreen = () => {
         return (
             <Odok
                 item={item}
-                onPress={toggleOverlay}
+                onPress={()=>toggleOverlay(item)}
                 textColor={"white"}
             />
         );
@@ -121,17 +188,6 @@ const GalleryScreen = () => {
         </View>
     );
 }
-
-const color_by_time = [
-    {
-        time: "6:00",
-        color: ["#66d6ff", "#5ab8ff", "#51a3ff"],
-    },
-    {
-        time: "18:00",
-        color: ["#f37880", "#f78d53", "#fa9c31"],
-    },
-];
 
 const styles = StyleSheet.create({
     container: {
@@ -175,14 +231,14 @@ const styles = StyleSheet.create({
         // justifyContent: "space-between",
     },
     read_pages: {
-        color: "gray",
+        color: "white",
         marginLeft: 15,
         fontSize: 18,
         fontWeight: 'bold',
         flex: 1,
     },
     read_time: {
-        color: "gray",
+        color: "white",
         marginLeft: 15,
         fontSize: 18,
         fontWeight: 'bold',
@@ -213,6 +269,31 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         flexDirection: 'column',
     },
+    overlay_title: {
+        fontSize: 20, 
+        marginLeft: 20, 
+        marginTop: 35, 
+        color: "white",
+    },
+    overlay_author: {
+        fontSize: 12, 
+        marginLeft: 20, 
+        marginTop: 5, 
+        color: "white",
+    },
+    overlay_read_pages: {
+        fontSize: 20, 
+        marginTop: 175,
+        color: "#696969",
+        fontWeight: 'bold',
+    },
+    overlay_time: {
+        fontSize: 20, 
+        marginTop: 175, 
+        color: "#696969",
+        fontWeight: 'bold',
+    },
+
 })
 
 export {GalleryScreen};
