@@ -10,10 +10,8 @@ const BookDetailScreen = ({navigation, route}) => {
             <View style={styles.detailcontainer}>
                 <View style={{flex: 1}}>
                     <Image 
-                    <Image 
                         source={route.params.image}
                         style={styles.bookimage}
-                    />
                     />
                 </View>
                 <View style={styles.textcontainer}>
