@@ -10,8 +10,10 @@ const BookDetailScreen = ({navigation, route}) => {
             <View style={styles.detailcontainer}>
                 <View style={{flex: 1}}>
                     <Image 
+                    <Image 
                         source={route.params.image}
                         style={styles.bookimage}
+                    />
                     />
                 </View>
                 <View style={styles.textcontainer}>
@@ -41,7 +43,11 @@ const BookDetailScreen = ({navigation, route}) => {
             <View style={styles.odokcontainer}>
                 <Button
                     title="start odok"
-                    onPress={() => navigation.navigate("OdokTimer")}
+                    onPress={() => navigation.navigate("OdokTimer", {
+                        title: route.params.title, 
+                        image: route.params.image,
+                        page_number: route.params.page_number
+                    })}
                 />
             </View>
         </View>
