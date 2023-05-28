@@ -8,7 +8,7 @@ import { BooklistScreen } from "./screens/BooklistScreen";
 import { GalleryScreen } from "./screens/GalleryScreen";
 import { AnalyticsScreen } from "./screens/AnalyticsScreen";
 import { BookDetailScreen } from "./screens/BookDetailScreen";
-import { OdokTimerScreen } from "./screens/OdokTimerScreen";
+import { OdokTimerScreen, OdokCreateScreen } from "./screens/OdokTimerScreen";
 
 import { ScanBarcodeScreen } from "./screens/ScanBarcodeScreen";
 import { SearchBookScreen } from "./screens/SearchBookScreen";
@@ -27,7 +27,8 @@ import * as RootNavigation from "./RootNavigation"
 
 const Tab = createBottomTabNavigator();
 
-const stackHome = createStackNavigator()
+const stackHome = createStackNavigator();
+const stackBooklist = createStackNavigator();
 
 function HomeStack({navigation, route}) {
     React.useLayoutEffect(() => {
@@ -52,14 +53,21 @@ function HomeStack({navigation, route}) {
             <stackHome.Screen name="HomeScreen" component={HomeScreen} options={{title:"ODOK"}}/>
             <stackHome.Screen name="BookDetail" component={BookDetailScreen} options={{title:"Book Detail"}}/>
             <stackHome.Screen name="OdokTimer" component={OdokTimerScreen} options={{title:"ODOK"}}/>
+            <stackHome.Screen 
+                name="OdokCreate" 
+                component={OdokCreateScreen} 
+                options={{
+                    presentation: "transparentModal",
+                    headerShown: false,
+                    cardOverlayEnabled: true
+                }}
+            />
             <stackHome.Screen name="SearchBook" component={SearchBookScreen} options={{title:"ODOK"}}/>
             <stackHome.Screen name="ScanBarcode" component={ScanBarcodeScreen} options={{title:"ODOK"}}/>
             <stackHome.Screen name="BookInfo" component={BookInfoScreen} options={{title:"ODOK"}}/>
         </stackHome.Navigator>
     )
 }
-
-const stackCreateBook = createStackNavigator()
 
 
 
