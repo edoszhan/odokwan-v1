@@ -8,17 +8,6 @@ import { Book } from "../App";
 import { SearchBar } from '@rneui/themed';
 import { useRealm } from "../App";
 
-// type BookData = {
-//     title: String;
-//     author: String;
-//     page_number: Number;
-//     image: Number;
-//     status: Number;
-// };
-
-
-
-
 
 const BooklistScreen = ({navigation}) => {
     
@@ -75,8 +64,9 @@ const BooklistScreen = ({navigation}) => {
                 </View>
                 <Text style={[styles.title, {color: textColor}]}>{item.title}</Text>
                 <Text style={[styles.title, {color: textColor}]}>{item.author}</Text>
-            </View>
-        </View>
+                </View>
+            </View> 
+
         </TouchableOpacity>
     );
 
